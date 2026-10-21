@@ -1,9 +1,12 @@
-import { IsInt, IsNotEmpty, IsString, Max, Min } from "class-validator";
+import { IsInt, IsNotEmpty, IsOptional, IsString, Max, Min } from "class-validator";
 
-export class CreateMovieDto {
+export class MovieDto {
   @IsNotEmpty()
   @IsString()
   title: string;
+
+  @IsOptional()
+  description: string;
 
   @IsNotEmpty()
   @IsInt()

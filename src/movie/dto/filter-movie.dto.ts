@@ -19,7 +19,7 @@ export class FilterMovieDto {
   @IsOptional()
   @Transform(({ value }) => value === 'true')
   @IsBoolean()
-  isPublic?: boolean;
+  isAvailable?: boolean;
 
   @IsOptional()
   @IsIn(['title', 'releaseYear', 'createdAt'])

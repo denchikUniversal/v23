@@ -1,6 +1,6 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { MovieService } from './movie.service';
-import { CreateMovieDto } from './dto/create-movie.dto';
+import { MovieDto } from './dto/movie.dto';
 import { FilterMovieDto } from './dto/filter-movie.dto';
 
 @Controller('movies')
@@ -12,8 +12,23 @@ export class MovieController {
     return this.movieService.findAll(filters);
   }
 
+  @Get(':id')
+  findById(@Param('id') id: string) {
+    return this.movieService.findById(id);
+  }
+
   @Post()
-  create(@Body() movie: CreateMovieDto) {
+  create(@Body() movie: MovieDto) {
     return this.movieService.create(movie);
+  }
+
+  @Put(':id')
+  update(@Param('id') id: string, @Body() movie: MovieDto) {
+    return this.movieService.update(id, movie);
+  }
+
+  @Delete(':id')
+  delete(@Param('id') id: string) {
+    return this.movieService.delete(id);
   }
 }
