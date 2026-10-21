@@ -47,6 +47,7 @@ export class MovieService {
         createdAt: true,
         releaseDate: true,
         genre: true,
+        reviews: true,
       },
     });
 
