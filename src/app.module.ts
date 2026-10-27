@@ -8,6 +8,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { getTypeOrmConfig } from './typeorm/config/typeorm.config';
 import { ReviewModule } from './typeorm/review/review.module';
 import { ActorModule } from './typeorm/actor/actor.module';
+import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { ActorModule } from './typeorm/actor/actor.module';
       inject: [ConfigService],
       useFactory: getTypeOrmConfig,
     }),
+    PrismaModule,
     TaskModule, 
     MovieModule, 
     ReviewModule, ActorModule, 
