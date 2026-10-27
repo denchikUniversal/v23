@@ -16,52 +16,56 @@ export class MovieService {
   ) {}
 
   async findAll(filters: FilterMovieDto) {
-    // const {
-    //   search,
-    //   yearFrom,
-    //   yearTo,
-    //   isAvailable,
-    //   sortBy = 'createdAt',
-    //   order = 'desc',
-    //   page = 1,
-    //   limit = 10,
-    // } = filters;
+    const {
+      search,
+      yearFrom,
+      yearTo,
+      isAvailable,
+      sortBy = 'createdAt',
+      order = 'desc',
+      page = 1,
+      limit = 10,
+    } = filters;
 
     // Собираем where через if: в TypeORM 1.x undefined/null в where по умолчанию бросает ошибку
-    // const where: FindOptionsWhere<MovieEntity> = {};
+    const where: FindOptionsWhere<MovieEntity> = {};
 
-    // if (search) where.title = ILike(`%${search}%`);
-    // if (isAvailable !== undefined) where.isAvailable = isAvailable;
+    if (search) where.title = ILike(`%${search}%`);
+    if (isAvailable !== undefined) where.isAvailable = isAvailable;
 
-    // if (yearFrom !== undefined && yearTo !== undefined) where.releaseYear = Between(yearFrom, yearTo);
-    // else if (yearFrom !== undefined) where.releaseYear = MoreThanOrEqual(yearFrom);
-    // else if (yearTo !== undefined) where.releaseYear = LessThanOrEqual(yearTo);
+    if (yearFrom !== undefined && yearTo !== undefined) where.releaseYear = Between(yearFrom, yearTo);
+    else if (yearFrom !== undefined) where.releaseYear = MoreThanOrEqual(yearFrom);
+    else if (yearTo !== undefined) where.releaseYear = LessThanOrEqual(yearTo);
 
-    // const [items, total] = await this.movieRepository.findAndCount({
-    //   where,
-    //   order: { [sortBy]: order },
-    //   skip: (page - 1) * limit,
-    //   take: limit,
-    //   select: {
-    //     id: true,
-    //     title: true,
-    //     releaseYear: true,
-    //     isAvailable: true,
-    //     createdAt: true,
-    //     releaseDate: true,
-    //     genre: true,
-    //     reviews: true,
-    //   },
-    // });
-
-    // return { items, meta: this.getMeta(total, page, limit) };
-    const movies = this.movieRepository.find({
+    const [items, total] = await this.movieRepository.findAndCount({
+      where,
+      order: { [sortBy]: order },
+      skip: (page - 1) * limit,
+      take: limit,
+      select: {
+        id: true,
+        title: true,
+        releaseYear: true,
+        isAvailable: true,
+        createdAt: true,
+        releaseDate: true,
+        genre: true,
+        reviews: true,
+      },
       relations: {
         reviews: true,
         actors: true,
-      },
+      }
     });
-    return movies;
+
+    return { items, meta: this.getMeta(total, page, limit) };
+    // const movies = this.movieRepository.find({
+    //   relations: {
+    //     reviews: true,
+    //     actors: true,
+    //   },
+    // });
+    // return movies;
   }
 
   async findById(id: string): Promise<MovieEntity> {
