@@ -5,6 +5,7 @@ import { Between, FindOptionsWhere, ILike, In, LessThanOrEqual, MoreThanOrEqual,
 import { MovieDto } from './dto/movie.dto';
 import { FilterMovieDto } from './dto/filter-movie.dto';
 import { ActorEntity } from '../actor/entities/actor.entity';
+import { MoviePosterEntity } from './entities/poster.entity';
 
 @Injectable()
 export class MovieService {
@@ -12,7 +13,9 @@ export class MovieService {
     @InjectRepository(MovieEntity) 
     private readonly movieRepository: Repository<MovieEntity>,
     @InjectRepository(ActorEntity) 
-    private readonly actorRepository: Repository<ActorEntity>
+    private readonly actorRepository: Repository<ActorEntity>,
+    @InjectRepository(MoviePosterEntity) 
+    private readonly posterRepository: Repository<MoviePosterEntity>
   ) {}
 
   async findAll(filters: FilterMovieDto) {
@@ -55,6 +58,7 @@ export class MovieService {
       relations: {
         reviews: true,
         actors: true,
+        poster: true,
       }
     });
 
@@ -78,7 +82,7 @@ export class MovieService {
   }
 
   async create(movie: MovieDto): Promise<MovieEntity> {
-    const {title, releaseYear, actorIds, description} = movie;
+    const {title, releaseYear, actorIds, description, imageUrl} = movie;
 
     const actors = await this.actorRepository.find({
       where: {
@@ -88,11 +92,18 @@ export class MovieService {
 
     if (!actors || !actors.length) throw new NotFoundException();
 
+    let poster: MoviePosterEntity | undefined;
+
+    if (imageUrl) {
+      poster = this.posterRepository.create({ url: imageUrl })
+    }
+
     const newMovie = this.movieRepository.create({
       title,
       releaseYear,
       description,
       actors,
+      poster,
     });
 
     return await this.movieRepository.save(newMovie);
