@@ -59,13 +59,6 @@ export class MovieService {
     });
 
     return { items, meta: this.getMeta(total, page, limit) };
-    // const movies = this.movieRepository.find({
-    //   relations: {
-    //     reviews: true,
-    //     actors: true,
-    //   },
-    // });
-    // return movies;
   }
 
   async findById(id: string): Promise<MovieEntity> {
