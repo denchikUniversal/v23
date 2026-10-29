@@ -5,7 +5,7 @@ import { PrismaClient } from './generated/prisma/client';
 
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
-  constructor(configService: ConfigService) {
+  constructor(private readonly configService: ConfigService) {
     const adapter = new PrismaPg({
       host: configService.getOrThrow('POSTGRES_HOST'),
       port: Number(configService.getOrThrow('POSTGRES_PORT')),
