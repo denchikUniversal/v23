@@ -9,6 +9,11 @@ import { getTypeOrmConfig } from './typeorm/config/typeorm.config';
 import { ReviewModule } from './typeorm/review/review.module';
 import { ActorModule } from './typeorm/actor/actor.module';
 import { PrismaModule } from './prisma/prisma.module';
+import { BullModule } from '@nestjs/bullmq';
+import { getRedisConnectionOptions } from './redis/redis.config';
+import { RedisModule } from './redis/redis.module';
+import { FakeMarketplaceModule } from './fake-marketplace/fake-marketplace.module';
+import { MarketplaceModule } from './marketplace/marketplace.module';
 
 @Module({
   imports: [
@@ -20,10 +25,19 @@ import { PrismaModule } from './prisma/prisma.module';
       inject: [ConfigService],
       useFactory: getTypeOrmConfig,
     }),
+    BullModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        connection: getRedisConnectionOptions(configService),
+      }),
+    }),
     PrismaModule,
-    TaskModule, 
-    MovieModule, 
-    ReviewModule, ActorModule, 
+    RedisModule,
+    TaskModule,
+    MovieModule,
+    ReviewModule, ActorModule,
+    FakeMarketplaceModule,
+    MarketplaceModule,
   ],
   controllers: [AppController],
   providers: [AppService],

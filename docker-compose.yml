@@ -13,6 +13,21 @@ services:
       timeout: 5s
       retries: 10
 
+  redis:
+    image: redis:8-alpine
+    restart: unless-stopped
+    # AOF: очереди переживают рестарт Redis. noeviction (по умолчанию) обязателен для BullMQ
+    command: ["redis-server", "--appendonly", "yes", "--maxmemory-policy", "noeviction"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
   app:
     build: .
     restart: unless-stopped
@@ -20,12 +35,18 @@ services:
     environment:
       POSTGRES_HOST: db
       POSTGRES_PORT: 5432
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
     ports:
       - "3000:3000"
     depends_on:
       db:
         condition: service_healthy
+      redis:
+        condition: service_healthy
 
 volumes:
   pgdata:
     name: v23-pgdata
+  redisdata:
+    name: v23-redisdata
