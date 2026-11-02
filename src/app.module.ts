@@ -8,7 +8,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { getTypeOrmConfig } from './typeorm/config/typeorm.config';
 import { ReviewModule } from './typeorm/review/review.module';
 import { ActorModule } from './typeorm/actor/actor.module';
-import { PrismaModule } from './prisma/prisma.module';
 import { BullModule } from '@nestjs/bullmq';
 import { getRedisConnectionOptions } from './redis/redis.config';
 import { RedisModule } from './redis/redis.module';
@@ -31,13 +30,12 @@ import { MarketplaceModule } from './marketplace/marketplace.module';
         connection: getRedisConnectionOptions(configService),
       }),
     }),
-    PrismaModule,
-    RedisModule,
+    // RedisModule,
     TaskModule,
     MovieModule,
     ReviewModule, ActorModule,
-    FakeMarketplaceModule,
-    MarketplaceModule,
+    // FakeMarketplaceModule,
+    // MarketplaceModule,
   ],
   controllers: [AppController],
   providers: [AppService],
