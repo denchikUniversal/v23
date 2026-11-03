@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TaskModule } from './typeorm/task/task.module';
@@ -13,6 +13,7 @@ import { getRedisConnectionOptions } from './redis/redis.config';
 import { RedisModule } from './redis/redis.module';
 import { FakeMarketplaceModule } from './fake-marketplace/fake-marketplace.module';
 import { MarketplaceModule } from './marketplace/marketplace.module';
+import { LoggerMiddleware } from './common/middlewares/logger.middleware';
 
 @Module({
   imports: [
@@ -40,4 +41,8 @@ import { MarketplaceModule } from './marketplace/marketplace.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes('*');
+  }
+}
