@@ -14,12 +14,14 @@ import { RedisModule } from './redis/redis.module';
 import { FakeMarketplaceModule } from './fake-marketplace/fake-marketplace.module';
 import { MarketplaceModule } from './marketplace/marketplace.module';
 import { LoggerMiddleware } from './common/middlewares/logger.middleware';
+import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    PrismaModule,
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
