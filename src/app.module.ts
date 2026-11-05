@@ -5,7 +5,7 @@ import { TaskModule } from './typeorm/task/task.module';
 import { MovieModule } from './typeorm/movie/movie.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { getTypeOrmConfig } from './typeorm/config/typeorm.config';
+import { getTypeOrmConfig } from './config/typeorm.config';
 import { ReviewModule } from './typeorm/review/review.module';
 import { ActorModule } from './typeorm/actor/actor.module';
 import { BullModule } from '@nestjs/bullmq';
@@ -15,6 +15,7 @@ import { FakeMarketplaceModule } from './fake-marketplace/fake-marketplace.modul
 import { MarketplaceModule } from './marketplace/marketplace.module';
 import { LoggerMiddleware } from './common/middlewares/logger.middleware';
 import { PrismaModule } from './prisma/prisma.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -34,9 +35,10 @@ import { PrismaModule } from './prisma/prisma.module';
       }),
     }),
     // RedisModule,
-    TaskModule,
-    MovieModule,
-    ReviewModule, ActorModule,
+    AuthModule,
+    // TaskModule,
+    // MovieModule,
+    // ReviewModule, ActorModule, AuthModule,
     // FakeMarketplaceModule,
     // MarketplaceModule,
   ],

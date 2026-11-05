@@ -8,6 +8,7 @@ const PORT = process.env.POSTGRES_PORT || "5434";
 const DB = process.env.POSTGRES_DB || "v23";
 
 const dbUrl = `postgresql://${USER}:${PASSWORD}@${HOST}:${PORT}/${DB}?schema=public`;
+
 export default defineConfig({
   schema: "prisma/schema.prisma",
   migrations: {
