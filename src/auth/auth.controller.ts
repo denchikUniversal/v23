@@ -5,6 +5,9 @@ import { LoginRequest } from './dto/login.dto';
 import type { Response, Request } from 'express';
 import { ApiOperation } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
+import { Authorization } from './decorators/authorization.decorator';
+import { Authorized } from './decorators/authorized.decorator';
+import { User } from '../generated/prisma/browser';
 
 @Controller('auth')
 export class AuthController {
@@ -68,9 +71,10 @@ export class AuthController {
     return this.authService.getAllUsers();
   }
 
-  @UseGuards(AuthGuard('jwt'))
+
+  @Authorization() // @UseGuards(AuthGuard('jwt'))
   @Get('@me')
-  async getMe(@Req() req: Request) {
-    return req.user;
+  async getMe(@Authorized() user: User) {
+    return user;
   }
 }

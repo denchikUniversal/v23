@@ -95,7 +95,6 @@ export class AuthService {
 
   private setCookie(res: Response, token: string, ttl: Date) {
    const isDevelopment = isDev(this.configService);
-   console.log('isDevelopment', isDevelopment);
 
     res.cookie('refresh_token', token, {
       expires: ttl,
