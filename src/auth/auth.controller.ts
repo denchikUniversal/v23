@@ -1,9 +1,10 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterRequest } from './dto/register.dto';
 import { LoginRequest } from './dto/login.dto';
 import type { Response, Request } from 'express';
 import { ApiOperation } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('auth')
 export class AuthController {
@@ -65,5 +66,11 @@ export class AuthController {
   @Get('users')
   async getAllUsers() {
     return this.authService.getAllUsers();
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('@me')
+  async getMe(@Req() req: Request) {
+    return req.user;
   }
 }

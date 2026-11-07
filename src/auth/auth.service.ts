@@ -133,6 +133,18 @@ export class AuthService {
     this.setCookie(res, 'refreshToken', new Date(0));
   }
 
+  async validate(id: string) {
+    const user = await this.prisma.user.findUnique({
+      where: {id},
+    })
+
+    if (!user) {
+      throw new NotFoundException();
+    }
+
+    return user;
+  }
+
    async getAllUsers() {
     return this.prisma.user.findMany();
   }
