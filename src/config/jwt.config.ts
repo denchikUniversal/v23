@@ -7,5 +7,9 @@ export async function getJwtConfig(configService: ConfigService): Promise<JwtMod
     signOptions: {
       algorithm: 'HS256',
     },
+    verifyOptions: {
+      algorithms: ['HS256'],
+      ignoreExpiration: false,
+    }
   }
 }
