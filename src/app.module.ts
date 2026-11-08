@@ -16,6 +16,7 @@ import { MarketplaceModule } from './marketplace/marketplace.module';
 import { LoggerMiddleware } from './common/middlewares/logger.middleware';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
+import { ChatModule } from './chat/chat.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { AuthModule } from './auth/auth.module';
     }),
     // RedisModule,
     AuthModule,
+    ChatModule,
     // TaskModule,
     // MovieModule,
     // ReviewModule, ActorModule, AuthModule,
